@@ -8,5 +8,47 @@
     <artifactId>homework1</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <organization>
+        <name>Innopolis</name>
+    </organization>
 
+    <developers>
+        <developer>
+            <id>bbb1991</id>
+            <name>Bagdat Bimaganbetov</name>
+            <email>bagdat.bimaganbetov@gmail.com</email>
+            <organization>Innopolis</organization>
+            <roles>
+                <role>student</role>
+            </roles>
+            <url>https://bbb1991.me</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>LICENCE</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+    </dependencies>
 </project>

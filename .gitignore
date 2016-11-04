@@ -4,5 +4,9 @@ homework1.iml
 
 # Compiled files
 target
+hw1.jar
 
 # Developer's junk files
+src/main/java/mockFileGenerators/
+mockFiles/
+questions.txt

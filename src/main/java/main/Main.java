@@ -2,6 +2,15 @@ package main;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 /**
  * Created by bbb1991 on 11/2/16.
  *
@@ -12,6 +21,40 @@ public class Main {
     private static final Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
-        logger.info("dgfsfgsfd");
+
+        // Если в аргументе не было ничего передана
+        if (args.length == 0) {
+            logger.error("Вы должны подать список ресурсов!");
+            System.exit(-1);
+        }
+
+        logger.info(String.format("Было передано %d ресурсов. Запускаю потоки...%n", args.length));
+        ExecutorService executorService = Executors.newFixedThreadPool(args.length);
+
+
+        // FIXME clean up all this mess
+        List<Future<Void>> listOfFuture = new ArrayList<>();
+        Box<String> box = new Box<>();
+        try {
+            for (String file : args) {
+                logger.info("Запускаю поток для ресурса: " + file);
+                listOfFuture.add(executorService.submit(new TaskRunner(file, box)));
+            }
+
+            listOfFuture.parallelStream().forEach(future -> {
+                try {
+                    future.get();
+                } catch (Exception e1) {
+                    logger.error("Something terrible happened!");
+                    executorService.shutdownNow();
+                }
+            });
+
+            logger.info("Everything OK. Shutting down app.");
+
+        } catch (Exception ex) {
+            executorService.shutdownNow();
+            logger.trace("Something happened! Abort mission! ", ex);
+        }
     }
 }

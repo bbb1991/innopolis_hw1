@@ -1,6 +1,7 @@
 package helper;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,8 +32,8 @@ public class StringHelper {
      * @return массив слов, разбитый по токену
      * @throws IllegalArgumentException если была передана пустая строка
      */
-    public String[] split(final String text) throws IllegalArgumentException{
-//        logger.info("Splitting line");
+    public String[] split(final String text) throws IllegalArgumentException {
+        logger.debug("Incoming text: " + text);
 
 //        if (text.trim().isEmpty()) {
 //            throw new IllegalArgumentException("Passed string is empty!");
@@ -54,7 +55,8 @@ public class StringHelper {
      * @return результат проверки булевое значение
      */
     public boolean isTextContainForeignSymbol(final String text) {
-//        logger.info("Checking text if contain foreign symbols");
+        logger.debug("Checking text if contain foreign symbols.");
+        logger.debug("Text: " + text);
 
         Pattern pattern = Pattern.compile("[\\\\p{Punct}&&[^@',&]]&&[^А-Яа-я0-9_\\s]");
         Matcher matcher = pattern.matcher(text);
@@ -67,15 +69,16 @@ public class StringHelper {
     }
 
     @Deprecated
-    public boolean isTextContainDuplicates(String[] words) {
-//        logger.info("");
+    public boolean isTextContainDuplicates(final String[] words) {
+        logger.debug(Arrays.deepToString(words));
         Set<String> set = new HashSet<>(Arrays.asList(words));
         return set.size() != words.length;
     }
 
 
     public boolean isTextContainDuplicates(String[] words, Set<String> set) {
-//        logger.info("Checking if text contain duplicates");
+        logger.debug("Checking if text contain duplicates");
+        logger.debug("Array is: " + Arrays.deepToString(words));
         int sizeBefore = set.size();
         set.addAll(Arrays.stream(words).collect(Collectors.toList()));
         return sizeBefore + words.length != set.size();

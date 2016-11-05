@@ -33,7 +33,11 @@ public abstract class AbstractResourceReader {
         try (
              Stream<String> stringStream = bufferedReader.lines()) {
 
-            stringStream.forEach(e -> {
+            stringStream.parallel().forEach(e -> {
+
+                logger.debug(e);
+
+                // проверяем, не содержит ли считанный текст
                 if (helper.isTextContainForeignSymbol(e)) {
                     logger.error(String.format("Thread %s: Foreign symbol found!", Thread.currentThread().getName()));
                     throw new IllegalArgumentException(String.format(" имеет букву ин. языка!%n"));
@@ -41,6 +45,7 @@ public abstract class AbstractResourceReader {
 
                 String[] words = helper.split(e);
 
+                // проверяем, не встречался ли слова в данной строке ранее.
                 if (helper.isTextContainDuplicates(words, set)) {
                     logger.error(String.format("Thread %s: text contain duplicates!", Thread.currentThread().getName()));
                     throw new IllegalArgumentException(String.format(" имеет дубликат!%n"));

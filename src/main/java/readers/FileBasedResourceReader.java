@@ -5,9 +5,7 @@ import helper.StringHelper;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Created by bbb1991 on 11/3/16.
@@ -29,7 +27,7 @@ public class FileBasedResourceReader extends AbstractResourceReader {
         try (FileReader fileReader = new FileReader(file);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
 
-            return bufferReader(bufferedReader);
+            return process(bufferedReader);
 
         } catch (IOException e) {
             logger.trace(String.format("Something terrible happened in thread %s!", Thread.currentThread().getName()), e);

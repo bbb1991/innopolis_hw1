@@ -1,6 +1,8 @@
 package readers;
 
 import helper.StringHelper;
+import main.Box;
+import main.Constants;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -28,31 +30,30 @@ public abstract class AbstractResourceReader {
 
     public abstract Set<String> read(final String file);
 
-    public Set<String> bufferReader(BufferedReader bufferedReader) {
+    public Set<String> process(BufferedReader bufferedReader) {
         Set<String> set = new HashSet<>();
-        try (
-             Stream<String> stringStream = bufferedReader.lines()) {
 
-            stringStream.parallel().forEach(e -> {
+        String line;
 
-                logger.debug(e);
+        try {
+            while ((line = bufferedReader.readLine()) != null && Box.flag == Constants.SUCCESS) {
 
                 // проверяем, не содержит ли считанный текст
-                if (helper.isTextContainForeignSymbol(e)) {
+                if (helper.isTextContainForeignSymbol(line)) {
+                    Box.flag = Constants.FOREIGN_SYMBOL_FOUND;
                     logger.error(String.format("Thread %s: Foreign symbol found!", Thread.currentThread().getName()));
-                    throw new IllegalArgumentException(String.format(" имеет букву ин. языка!%n"));
                 }
 
-                String[] words = helper.split(e);
+                String[] words = helper.split(line);
 
                 // проверяем, не встречался ли слова в данной строке ранее.
                 if (helper.isTextContainDuplicates(words, set)) {
+                    Box.flag = Constants.DUPLICATE_FOUND;
                     logger.error(String.format("Thread %s: text contain duplicates!", Thread.currentThread().getName()));
-                    throw new IllegalArgumentException(String.format(" имеет дубликат!%n"));
                 }
-
-            });
-
+            }
+        } catch (IOException e) {
+            Box.flag = Constants.UNEXPECTED_ERROR;
         }
 
         logger.info("Reading completed!");

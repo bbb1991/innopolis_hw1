@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import static main.Constants.*;
+
 /**
  * Created by bbb1991 on 11/4/16.
  * Класс, предназначенный для хранения и сравнения на уникальность
@@ -14,8 +16,10 @@ public class Box<T> {
     private final Set<T> set;
     private static final Object MONITOR = new Object();
 
+    public static int flag = SUCCESS;
+
     public Box() {
-        this.set = new HashSet<T>();
+        this.set = new HashSet<>();
     }
 
     /**

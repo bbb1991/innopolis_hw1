@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */
-public class TaskRunner implements Callable<Void> {
+public class TaskRunner implements Runnable {
 
     private static final Logger logger = Logger.getLogger(TaskRunner.class);
     private String resource;
@@ -26,19 +26,18 @@ public class TaskRunner implements Callable<Void> {
     }
 
     @Override
-    public Void call() throws Exception {
+    public void run() {
         logger.info(String.format("Запущен %s поток для ресурса: %s", Thread.currentThread().getName(), resource));
 
         AbstractResourceReader resourceReader = ReaderFactory.getResourceReader(resource);
         Set<String> set = resourceReader.read(resource);
 
         if (!box.addElements(set)) {
-            throw new IllegalArgumentException(String.format("Duplicates found!%n"));
+            Box.flag = Constants.DUPLICATE_FOUND;
+            logger.error("Duplicate found!");
         }
 
         logger.info(String.format("Поток %s завершил свою работу", Thread.currentThread().getName()));
 
-        return null;
-        // TODO change this mess
     }
 }

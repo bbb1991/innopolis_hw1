@@ -20,6 +20,8 @@ import java.util.concurrent.Future;
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class);
 
+
+
     public static void main(String[] args) {
 
         // Если в аргументе не было ничего передана
@@ -33,24 +35,18 @@ public class Main {
 
 
         // FIXME clean up all this mess
-        List<Future<Void>> listOfFuture = new ArrayList<>();
         Box<String> box = new Box<>();
         try {
             for (String file : args) {
                 logger.info("Запускаю поток для ресурса: " + file);
-                listOfFuture.add(executorService.submit(new TaskRunner(file, box)));
+                executorService.execute(new TaskRunner(file, box));
             }
 
-            listOfFuture.parallelStream().forEach(future -> {
-                try {
-                    future.get();
-                } catch (Exception e1) {
-                    logger.error("Something terrible happened!");
-                    executorService.shutdownNow();
-                }
-            });
-
-            logger.info("Everything OK. Shutting down app.");
+            if (Box.flag == Constants.SUCCESS) {
+                logger.info("Everything OK. Shutting down app.");
+            } else {
+                logger.info("Something wrong. Flag is: " + Box.flag);
+            }
 
         } catch (Exception ex) {
             executorService.shutdownNow();

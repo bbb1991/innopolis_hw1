@@ -35,10 +35,9 @@ public class StringHelperTest {
 
     /**
      * Тест по проверки корректной разбивке текста на слова
-     * @throws Exception
      */
     @Test
-    public void testSplitText() throws Exception {
+    public void testSplitText() {
         Assert.assertArrayEquals(new String[]{"Test", "string"}, stringHelper.split("Test               string"));
     }
 

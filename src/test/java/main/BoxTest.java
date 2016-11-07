@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created by bbb1991 on 11/4/16.
- *
+ * Тест для проверки методов бокса
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */
@@ -30,30 +30,25 @@ public class BoxTest {
     }
 
 
+    /**
+     * Корректный тест, когда элементы элементы, которые нет в сете добавляются
+     */
     @Test
     public void testAddElementsToEmptySet() {
         Assert.assertTrue(box.addElements(set));
     }
 
+
+    /**
+     * Тест, где проверяется добавление элементов которые уже есть там
+     */
     @Test
     public void testAddElementsThatExistsInSet() {
         box.addElements(set);
         Assert.assertFalse(box.addElements(set));
     }
 
-    @Test
-    public void testMultiThreadWrite() {
 
-    }
-
-    private class MyThread implements Runnable {
-        @Override
-        public void run() {
-            for (int i = 0; i < 1_000_000; i++) {
-//                box.addElements(Str\.);
-            }
-
-        }
-    }
+    // TODO: 11/8/16 Add some test thst checks multithread
 
 }

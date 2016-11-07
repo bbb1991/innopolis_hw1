@@ -14,7 +14,10 @@ import static main.States.FILE_NOT_FOUND;
 
 /**
  * Created by bbb1991 on 11/3/16.
- *
+ * Ридер для чтения файлов у которых не указан протокол.
+ * примеры:
+ * ./file.txt
+ * /tmp/foo/bar/file.txt
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */

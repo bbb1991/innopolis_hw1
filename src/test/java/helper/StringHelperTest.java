@@ -26,10 +26,6 @@ public class StringHelperTest {
      */
     @Before
     public void setup() {
-        Set<String> set = new HashSet<>();
-        AbstractResourceReader resourceReader = Mockito.mock(FileBasedResourceReader.class);
-        Mockito.when(resourceReader.read("file1.txt")).thenReturn(set);
-//        mockito.
         stringHelper = new StringHelper();
     }
 
@@ -43,32 +39,35 @@ public class StringHelperTest {
 
 
     /**
-     *
+     *  Тест для проверки, что текст с кириллицей отрабатывает
      */
     @Test
     public void testWithoutLatinLetter() {
         Assert.assertFalse(stringHelper.isTextContainForeignSymbol("Это текст без латинских букв"));
     }
 
-    @Test
-    public void testWithLatinLetter() {
-        Assert.assertTrue(stringHelper.isTextContainForeignSymbol("Этот текст содержит лaтинские буквы"));
-    }
-
     /**
-     *
+     * Тест для проверки, что символы ин. языка не проходит проверку
      */
     @Test
-    public void testArrayWithDuplicates() {
-        Assert.assertTrue(stringHelper.isTextContainDuplicates(new String[] {"Массив", "который", "содержит", "дубликаты", "дубликаты"}));
+    public void testWithLatinLetter() {
+        Assert.assertTrue(stringHelper.isTextContainForeignSymbol("Этот текст содержит буквы 辞盤レケヱメ投楽6月テ食権ハ越聞せむどち権話びざト人74湖ミ"));
     }
 
     /**
-     *
+     * Проверка что детектится дубликаты слов
+      */
+    @Test
+    public void testArrayWithDuplicates() {
+        Assert.assertTrue(stringHelper.isTextContainDuplicates(new String[] {"Массив", "который", "содержит", "дубликаты", "дубликаты"}, new HashSet<>()));
+    }
+
+    /**
+     *Проверка что массив без дубликатов верно отрабатывает
      */
     @Test
     public void testArrayWithoutDuplicates() {
-        Assert.assertFalse(stringHelper.isTextContainDuplicates(new String[] {"Массив", "который", "не", "содержит", "дубликаты", }));
+        Assert.assertFalse(stringHelper.isTextContainDuplicates(new String[] {"Массив", "который", "не", "содержит", "дубликаты", }, new HashSet<>()));
     }
 
     /**

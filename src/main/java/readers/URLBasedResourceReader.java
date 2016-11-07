@@ -14,7 +14,7 @@ import static main.States.UNEXPECTED_ERROR;
 
 /**
  * Created by bbb1991 on 11/3/16.
- *
+ * Ридер для ресурсов у которых указан протокол
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */

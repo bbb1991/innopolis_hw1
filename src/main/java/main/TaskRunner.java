@@ -1,12 +1,12 @@
 package main;
 
-import helper.StringHelper;
 import org.apache.log4j.Logger;
 import readers.AbstractResourceReader;
 import readers.ReaderFactory;
 
 import java.util.Set;
-import java.util.concurrent.Callable;
+
+import static main.States.DUPLICATE_FOUND;
 
 /**
  * Created by bbb1991 on 11/3/16.
@@ -33,11 +33,12 @@ public class TaskRunner implements Runnable {
         Set<String> set = resourceReader.read(resource);
 
         if (!box.addElements(set)) {
-            Box.flag = Constants.DUPLICATE_FOUND;
-            logger.error("Duplicate found!");
+            States.setFlag(DUPLICATE_FOUND);
+            logger.error(String.format("Thread %s: Duplicate found!", Thread.currentThread().getName()));
         }
 
-        logger.info(String.format("Поток %s завершил свою работу", Thread.currentThread().getName()));
-
+        if (States.getFlag() == States.OK) {
+            logger.info(String.format("Поток %s завершил свою работу", Thread.currentThread().getName()));
+        }
     }
 }

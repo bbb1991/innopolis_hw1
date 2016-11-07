@@ -1,11 +1,16 @@
 package readers;
 
 import helper.StringHelper;
+import main.States;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Set;
+
+import static main.States.UNEXPECTED_ERROR;
 
 /**
  * Created by bbb1991 on 11/3/16.
@@ -21,17 +26,21 @@ class URLBasedResourceReader extends AbstractResourceReader {
     @Override
     public Set<String> read(String resource) {
 
+        Set<String> set = Collections.emptySet();
+
         logger.info("Opening url: " + resource);
 
         try {
             URL url = new URL(resource);
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
-                return process(reader);
+                set = process(reader);
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            States.setFlag(UNEXPECTED_ERROR);
         }
+
+        return set;
     }
 }

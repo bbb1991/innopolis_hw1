@@ -2,14 +2,8 @@ package main;
 
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by bbb1991 on 11/2/16.
@@ -31,7 +25,8 @@ public class Main {
         }
 
         logger.info(String.format("Было передано %d ресурсов. Запускаю потоки...%n", args.length));
-        ExecutorService executorService = Executors.newFixedThreadPool(args.length);
+
+        List<Thread> threads = new ArrayList<>();
 
 
         // FIXME clean up all this mess
@@ -39,18 +34,23 @@ public class Main {
         try {
             for (String file : args) {
                 logger.info("Запускаю поток для ресурса: " + file);
-                executorService.execute(new TaskRunner(file, box));
+                Thread thread = new Thread(new TaskRunner(file, box));
+                threads.add(thread);
+                thread.start();
             }
 
-            if (Box.flag == Constants.SUCCESS) {
+            for (Thread thread : threads) {
+                thread.join();
+            }
+
+            if (States.getFlag() == States.OK) {
                 logger.info("Everything OK. Shutting down app.");
             } else {
-                logger.info("Something wrong. Flag is: " + Box.flag);
+                logger.error("Something wrong. Flag is: " + States.getFlag());
             }
 
         } catch (Exception ex) {
-            executorService.shutdownNow();
-            logger.trace("Something happened! Abort mission! ", ex);
+            logger.trace("Something  terrible happened! Abort mission! ", ex);
         }
     }
 }

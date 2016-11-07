@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static main.Constants.*;
+import static main.States.*;
 
 /**
  * Created by bbb1991 on 11/4/16.
@@ -12,11 +12,9 @@ import static main.Constants.*;
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */
-public class Box<T> {
+public final class Box<T> {
     private final Set<T> set;
     private static final Object MONITOR = new Object();
-
-    public static int flag = SUCCESS;
 
     public Box() {
         this.set = new HashSet<>();
@@ -31,7 +29,7 @@ public class Box<T> {
      *      <code>false</code> - если какой то элемент уже существовал.
      */
 
-    //// TODO: 11/4/16 maybe should adding and checking logic separate?
+    // TODO: 11/4/16 maybe should adding and checking logic separate?
     public boolean addElements(Collection<T> collection) {
         synchronized (MONITOR) {
             int size = this.set.size();

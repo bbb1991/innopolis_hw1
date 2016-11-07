@@ -1,11 +1,16 @@
 package readers;
 
 import helper.StringHelper;
+import main.Box;
+import main.States;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
+
+import static main.States.FILE_NOT_FOUND;
 
 /**
  * Created by bbb1991 on 11/3/16.
@@ -22,16 +27,20 @@ public class FileBasedResourceReader extends AbstractResourceReader {
     @Override
     public Set<String> read(String file) {
 
+        Set<String> set = Collections.emptySet();
+
         logger.info("Reading file: " + file );
 
         try (FileReader fileReader = new FileReader(file);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
 
-            return process(bufferedReader);
+            set =  process(bufferedReader);
 
         } catch (IOException e) {
+            States.setFlag(FILE_NOT_FOUND);
             logger.trace(String.format("Something terrible happened in thread %s!", Thread.currentThread().getName()), e);
-            throw new RuntimeException(e);
         }
+
+        return set;
     }
 }

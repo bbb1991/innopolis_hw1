@@ -2,22 +2,17 @@ package main;
 
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by bbb1991 on 11/2/16.
- *
+ * Класс, который и запускает все безобразие
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */
 public class Main {
+
     private static final Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
@@ -28,33 +23,35 @@ public class Main {
             System.exit(-1);
         }
 
-        logger.info(String.format("Было передано %d ресурсов. Запускаю потоки...%n", args.length));
-        ExecutorService executorService = Executors.newFixedThreadPool(args.length);
+        // по условию задачи каждый ресурс должен быть отработан в собственном потоке
+        List<Thread> threads = new ArrayList<>();
 
+        logger.info(String.format("Было передано %d ресурсов. Запускаю потоки...%n", args.length));
 
         // FIXME clean up all this mess
-        List<Future<Void>> listOfFuture = new ArrayList<>();
-        Box<String> box = new Box<>();
+        Box<String> box = new Box<>(); // создаем бокс для хранения результатов
         try {
-            for (String file : args) {
+            for (String file : args) { // на каждый ресурс запускаем новый поток
                 logger.info("Запускаю поток для ресурса: " + file);
-                listOfFuture.add(executorService.submit(new TaskRunner(file, box)));
+                Thread thread = new Thread(new TaskRunner(file, box));
+                threads.add(thread);
+                thread.start();
             }
 
-            listOfFuture.parallelStream().forEach(future -> {
-                try {
-                    future.get();
-                } catch (Exception e1) {
-                    logger.error("Something terrible happened!");
-                    executorService.shutdownNow();
-                }
-            });
+            // ожидаем завершения всех потоков
+            for (Thread thread : threads) {
+                thread.join();
+            }
 
-            logger.info("Everything OK. Shutting down app.");
+            // проверяем результат выполнения
+            if (States.getFlag() == States.OK) {
+                logger.info("Everything OK. Shutting down app.");
+            } else {
+                logger.error("Something wrong. Flag is: " + States.getFlag());
+            }
 
         } catch (Exception ex) {
-            executorService.shutdownNow();
-            logger.trace("Something happened! Abort mission! ", ex);
+            logger.trace("Something  terrible happened! Abort mission! ", ex);
         }
     }
 }

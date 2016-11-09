@@ -4,15 +4,17 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * Created by bbb1991 on 11/2/16.
- *
+ * Класс для работы со считанной строкой.
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */
@@ -30,14 +32,9 @@ public class StringHelper {
      *  в качестве токена пробелы
      * @param text текст который нужно разбить
      * @return массив слов, разбитый по токену
-     * @throws IllegalArgumentException если была передана пустая строка
      */
-    public String[] split(final String text) throws IllegalArgumentException {
-        logger.debug("Incoming text: " + text);
-
-//        if (text.trim().isEmpty()) {
-//            throw new IllegalArgumentException("Passed string is empty!");
-//        }
+    public String[] split(final String text)  {
+        logger.debug("Incoming text for split: " + text);
         return text.split(TOKEN);
     }
 
@@ -45,11 +42,12 @@ public class StringHelper {
      * Метод, который проверяет, содержит ли переданный текст символы ин языков.
      *
      * То есть по условию задачи текст должен содержать только кириллицу, знаки пунктуаций и цифры.
-     * Насчет кириллицы и цифр все понятно. А вот насчет знаков пунктуаций было решено брать список
-     * из википедий @see https://ru.wikipedia.org/wiki/%D0%97%D0%BD%D0%B0%D0%BA%D0%B8_%D0%BF%D1%80%D0%B5%D0%BF%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F
+     * Насчет кириллицы и цифр все понятно. А вот насчет знаков пунктуаций на заданий не было уточнений
+     * так что было решено брать список из википедий
+     * @see <a href="https://ru.wikipedia.org/wiki/%D0%97%D0%BD%D0%B0%D0%BA%D0%B8_%D0%BF%D1%80%D0%B5%D0%BF%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F">Wiki</a></a>
      *
      * Так же было неясно насчет нижнего подчеркивания, так как он входит в группу буквенно-цифр (\w)
-     * но в условий задания о нем не было слова но все же было решено интерпретировать его как корректный сивол
+     * но в условий задания о нем не было слова но все же было решено интерпретировать его как корректный символ
      *
      * @param text текст, который надо проверить
      * @return результат проверки булевое значение
@@ -58,30 +56,27 @@ public class StringHelper {
         logger.debug("Checking text if contain foreign symbols.");
         logger.debug("Text: " + text);
 
-        Pattern pattern = Pattern.compile("[\\\\p{Punct}&&[^@',&]]&&[^А-Яа-я0-9_\\s]");
+        Pattern pattern = Pattern.compile("[[^?!:;.,…@&()\\[\\]{\\}\\-+`\'\"]&&[^@',&]&&[^А-Яа-я0-9_\\s]]");
         Matcher matcher = pattern.matcher(text);
-
-        while (matcher.find()) {
-            System.out.println(matcher.group());
-        }
 
         return matcher.find();
     }
 
-    @Deprecated
-    public boolean isTextContainDuplicates(final String[] words) {
-        logger.debug(Arrays.deepToString(words));
-        Set<String> set = new HashSet<>(Arrays.asList(words));
-        return set.size() != words.length;
-    }
 
-
+    /**
+     * Метод, который проверяет, в считанной строке есть ли дубликаты
+     * @param words считанная строка, разбитая по пробелу
+     * @param set уже существующая сет (сет со словами, которые были считаны ранее в этом же ресурсе
+     * @return <code>true</code> - если содержится дубликаты и <code>false</code> если не содержит
+     */
     public boolean isTextContainDuplicates(String[] words, Set<String> set) {
         logger.debug("Checking if text contain duplicates");
         logger.debug("Array is: " + Arrays.deepToString(words));
-        int sizeBefore = set.size();
-        set.addAll(Arrays.stream(words).collect(Collectors.toList()));
-        return sizeBefore + words.length != set.size();
 
+        int sizeBefore = set.size(); // определяем, сколько слова уже содержится в сете
+
+        set.addAll(Arrays.stream(words).collect(Collectors.toList())); // добавляем новые слова
+
+        return sizeBefore + words.length != set.size(); // проверяем все ли слова добавились
     }
 }

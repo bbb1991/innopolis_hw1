@@ -1,6 +1,7 @@
 package main;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import readers.AbstractResourceReader;
 import readers.ReaderFactory;
 
@@ -16,7 +17,7 @@ import static main.States.DUPLICATE_FOUND;
  */
 public class TaskRunner implements Runnable {
 
-    private static final Logger logger = Logger.getLogger(TaskRunner.class);
+    private static final Logger logger = LoggerFactory.getLogger(TaskRunner.class);
 
     /**
      * Ресурс, с которым будет работать поток

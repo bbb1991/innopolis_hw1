@@ -1,22 +1,16 @@
 package readers;
 
 import helper.StringHelper;
-import jdk.nashorn.internal.ir.BlockStatement;
-import main.Box;
 import main.States;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static main.States.DUPLICATE_FOUND;
-import static main.States.FOREIGN_SYMBOL_FOUND;
-import static main.States.UNEXPECTED_ERROR;
+import static main.States.*;
 
 /**
  * Created by bbb1991 on 11/3/16.
@@ -31,7 +25,7 @@ public abstract class AbstractResourceReader {
      */
     private final StringHelper helper;
 
-    final Logger logger = Logger.getLogger(this.getClass());
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     AbstractResourceReader(StringHelper helper) {
         this.helper = helper;

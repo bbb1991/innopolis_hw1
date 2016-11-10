@@ -4,13 +4,12 @@ import helper.StringHelper;
 import main.States;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
 
-import static main.States.UNEXPECTED_ERROR;
+import static main.States.*;
 
 /**
  * Created by bbb1991 on 11/3/16.

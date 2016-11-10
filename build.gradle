@@ -1,0 +1,18 @@
+group 'me.bbb1991.innopolis_hw1'
+//artifact 'innopolis_hw1'
+version '1.0'
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'org.slf4j:slf4j-log4j12:1.7.21'
+}

@@ -4,6 +4,8 @@ homework1.iml
 
 # Compiled files
 target
+build
+.gradle
 hw1.jar
 
 # Developer's junk files

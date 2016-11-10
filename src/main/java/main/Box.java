@@ -1,7 +1,6 @@
 package main;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -37,4 +36,9 @@ public final class Box<T> {
         this.set.addAll(collection);
         return size + collection.size() == this.set.size();
     }
+
+    public int getSetSize() {
+        return set.size();
+    }
+
 }

@@ -40,3 +40,12 @@ mvn test
 ```bash
 gradle test
 ```
+
+#JConsole
+Чтобы протестировать производительность, необходимо запустить с параметрами:
+```bash
+-Dcom.sun.management.jmxremote.port=9005
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+```
+а затем подцепиться с помощью jconsole.

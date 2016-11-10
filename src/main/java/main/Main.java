@@ -4,12 +4,15 @@ package main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.*;
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by bbb1991 on 11/2/16.
  * Класс, который и запускает все безобразие
+ *
  * @author Bagdat Bimaganbetov
  * @author bagdat.bimaganbetov@gmail.com
  */
@@ -17,7 +20,12 @@ public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
+
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+
+        ObjectName name = new ObjectName("ServerManager:type=Controller");
+
 
         // Если в аргументе не было ничего передана
         if (args.length == 0) {
@@ -32,6 +40,11 @@ public class Main {
 
         // FIXME clean up all this mess
         Box<String> box = new Box<>(); // создаем бокс для хранения результатов
+
+        Controller bean = new Controller(box);
+        server.registerMBean(bean, name);
+
+
         try {
             for (String file : args) { // на каждый ресурс запускаем новый поток
                 logger.info("Запускаю поток для ресурса: {}", file);

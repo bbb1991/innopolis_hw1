@@ -57,7 +57,7 @@ public abstract class AbstractResourceReader {
                 // проверяем, не содержит ли считанный текст
                 if (helper.isTextContainForeignSymbol(line)) {
                     States.setFlag(FOREIGN_SYMBOL_FOUND);
-                    logger.error(String.format("Thread %s: Foreign symbol found!", Thread.currentThread().getName()));
+                    logger.error("Thread {}: Foreign symbol found!", Thread.currentThread().getName());
                 }
 
                 String[] words = helper.split(line);
@@ -65,7 +65,7 @@ public abstract class AbstractResourceReader {
                 // проверяем, не встречался ли слова в данной строке ранее.
                 if (helper.isTextContainDuplicates(words, set)) {
                     States.setFlag(DUPLICATE_FOUND);
-                    logger.error(String.format("Thread %s: text contain duplicates!", Thread.currentThread().getName()));
+                    logger.error("Thread {}: text contain duplicates!", Thread.currentThread().getName());
                 }
             }
         } catch (IOException e) {

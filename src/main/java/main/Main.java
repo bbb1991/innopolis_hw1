@@ -34,7 +34,7 @@ public class Main {
         Box<String> box = new Box<>(); // создаем бокс для хранения результатов
         try {
             for (String file : args) { // на каждый ресурс запускаем новый поток
-                logger.info("Запускаю поток для ресурса: " + file);
+                logger.info("Запускаю поток для ресурса: {}", file);
                 Thread thread = new Thread(new TaskRunner(file, box));
                 threads.add(thread);
                 thread.start();
@@ -49,11 +49,11 @@ public class Main {
             if (States.getFlag() == States.OK) {
                 logger.info("Everything OK. Shutting down app.");
             } else {
-                logger.error("Something wrong. Flag is: " + States.getFlag());
+                logger.error("Something wrong. Flag is: {}", States.getFlag());
             }
 
         } catch (Exception ex) {
-            logger.trace("Something  terrible happened! Abort mission! ", ex);
+            logger.error("Something  terrible happened! Abort mission! ", ex);
         }
     }
 }

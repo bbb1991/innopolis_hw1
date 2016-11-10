@@ -37,7 +37,7 @@ public class TaskRunner implements Runnable {
 
     @Override
     public void run() {
-        logger.info(String.format("Запущен %s поток для ресурса: %s", Thread.currentThread().getName(), resource));
+        logger.info("Запущен {} поток для ресурса: {}", Thread.currentThread().getName(), resource);
 
         // получаем ридер через фабрику
         AbstractResourceReader resourceReader = ReaderFactory.getResourceReader(resource);
@@ -47,9 +47,9 @@ public class TaskRunner implements Runnable {
 
         if (!box.addElements(set)) { // дубликат был найден в другом ресурсе.
             States.setFlag(DUPLICATE_FOUND);
-            logger.error(String.format("Thread %s: Duplicate found!", Thread.currentThread().getName()));
+            logger.error("Thread {}: Duplicate found!", Thread.currentThread().getName());
         } else if (States.getFlag() == States.OK) { // рапортуем что все ОК
-            logger.info(String.format("Поток %s завершил свою работу", Thread.currentThread().getName()));
+            logger.info("Поток {} завершил свою работу", Thread.currentThread().getName());
         }
     }
 }

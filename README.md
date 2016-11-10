@@ -19,10 +19,15 @@
 ```bash
 mvn compile assembly:single
 ```
+либо
+```bash
+gradle jar
+```
+
 В итоге получится файл **hw1.jar**. А затем запустить со списком файлов. 
 Пример:
 ```bash
-java -jar hw1.jar /tmp/file1.txt /tmp/file2.txt
+java -jar hw1.jar /tmp/file1.txt /tmp/file2.txt http://bbb1991.me/mock.txt file://test.txt
 ```
 
 
@@ -30,4 +35,8 @@ java -jar hw1.jar /tmp/file1.txt /tmp/file2.txt
 Для запуска тестов необходимо набрать в консоли
 ```bash
 mvn test
+```
+либо
+```bash
+gradle test
 ```

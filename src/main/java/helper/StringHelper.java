@@ -25,6 +25,10 @@ public class StringHelper {
      */
     private static final String TOKEN = "[\\s]+";
 
+
+    /**
+     * Логгер
+     */
     private static final Logger logger = Logger.getLogger(StringHelper.class);
 
     /**
@@ -44,7 +48,7 @@ public class StringHelper {
      * То есть по условию задачи текст должен содержать только кириллицу, знаки пунктуаций и цифры.
      * Насчет кириллицы и цифр все понятно. А вот насчет знаков пунктуаций на заданий не было уточнений
      * так что было решено брать список из википедий
-     * @see <a href="https://ru.wikipedia.org/wiki/%D0%97%D0%BD%D0%B0%D0%BA%D0%B8_%D0%BF%D1%80%D0%B5%D0%BF%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F">Wiki</a></a>
+     * @see <a href="https://goo.gl/wUlYur">Wiki</a></a>
      *
      * Так же было неясно насчет нижнего подчеркивания, так как он входит в группу буквенно-цифр (\w)
      * но в условий задания о нем не было слова но все же было решено интерпретировать его как корректный символ
@@ -66,14 +70,14 @@ public class StringHelper {
     /**
      * Метод, который проверяет, в считанной строке есть ли дубликаты
      * @param words считанная строка, разбитая по пробелу
-     * @param set уже существующая сет (сет со словами, которые были считаны ранее в этом же ресурсе
+     * @param set уже существующая множество (множество со словами, которые были считаны ранее в этом же ресурсе
      * @return <code>true</code> - если содержится дубликаты и <code>false</code> если не содержит
      */
     public boolean isTextContainDuplicates(String[] words, Set<String> set) {
         logger.debug("Checking if text contain duplicates");
         logger.debug("Array is: " + Arrays.deepToString(words));
 
-        int sizeBefore = set.size(); // определяем, сколько слова уже содержится в сете
+        int sizeBefore = set.size(); // определяем, сколько слова уже содержится в множестве
 
         set.addAll(Arrays.stream(words).collect(Collectors.toList())); // добавляем новые слова
 

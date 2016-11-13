@@ -13,3 +13,4 @@ src/main/java/mockFileGenerators/
 mockFiles/
 questions.txt
 src/main/java/main/Test.java
+.build.gradle.swp

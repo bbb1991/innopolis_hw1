@@ -12,7 +12,7 @@
 все API покрыто модульными тестами
 
 ##Deadline.
-Срок сдачи: до 11 ноября 2016 года
+Срок сдачи: до 13 ноября 2016 года
 
 ##Сборка и запуск
 Для сборки необходимо в консоли набрать:
@@ -24,10 +24,10 @@ mvn compile assembly:single
 gradle jar
 ```
 
-В итоге получится файл **hw1.jar**. А затем запустить со списком файлов. 
+В итоге получится файл **innopolis_hw1-1.0.jar**. А затем запустить со списком файлов. 
 Пример:
 ```bash
-java -jar hw1.jar /tmp/file1.txt /tmp/file2.txt http://bbb1991.me/mock.txt file://test.txt
+java -jar innopolis_hw1-1.0.jar /tmp/file1.txt /tmp/file2.txt http://bbb1991.me/mock.txt file://test.txt
 ```
 
 

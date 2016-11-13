@@ -1,10 +1,10 @@
 group 'me.bbb1991.innopolis_hw1'
-//artifact 'innopolis_hw1'
 version '1.0'
 
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     jcenter()
@@ -20,12 +20,26 @@ dependencies {
 }
 
 jar {
-    manifest {
-        attributes "Main-Class" : "main.Main"
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+        configurations.runtime.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
-
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes 'Implementation-Title': 'ndeploy',
+                'Implementation-Version': '0.1.0',
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                'Main-Class': 'main.Main'
+    }
 }
 
-jar.dependsOn clean
+buildscript {
+    dependencies {
+        classpath fileTree(dir: '../../build/libs', include: '*.jar', excludes: ['*javadoc.jar', '*sources.jar'])
+    }
+}

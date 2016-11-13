@@ -1,16 +1,14 @@
 package helper;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static main.Constants.*;
 
 /**
  * Created by bbb1991 on 11/2/16.
@@ -19,12 +17,6 @@ import java.util.stream.Collectors;
  * @author bagdat.bimaganbetov@gmail.com
  */
 public class StringHelper {
-
-    /**
-     * Токен для разбивки текста на слова.
-     */
-    private static final String TOKEN = "[\\s]+";
-
 
     /**
      * Логгер
@@ -60,7 +52,7 @@ public class StringHelper {
         logger.debug("Checking text if contain foreign symbols.");
         logger.debug("Text: " + text);
 
-        Pattern pattern = Pattern.compile("[[^?!:;.,…@&()\\[\\]{\\}\\-+`\'\"]&&[^@',&]&&[^А-Яа-я0-9_\\s]]");
+        Pattern pattern = Pattern.compile(FOREIGN_SYMBOL_PATTERN);
         Matcher matcher = pattern.matcher(text);
 
         return matcher.find();

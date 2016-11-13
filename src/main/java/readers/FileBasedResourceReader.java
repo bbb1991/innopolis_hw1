@@ -40,7 +40,7 @@ public class FileBasedResourceReader extends AbstractResourceReader {
 
         } catch (IOException e) {
             States.setFlag(FILE_NOT_FOUND);
-            logger.trace(String.format("Something terrible happened in thread %s!", Thread.currentThread().getName()), e);
+            logger.trace("Something terrible happened in thread {}!", Thread.currentThread().getName(), e);
         }
 
         return set;
